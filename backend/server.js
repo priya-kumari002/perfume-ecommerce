@@ -1,6 +1,6 @@
+import "dotenv/config";
 
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -8,7 +8,7 @@ import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import path from "path";
+
 import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
@@ -25,7 +25,6 @@ import adminUserRoutes from "./routes/adminUserRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 
-// Crash protectors
 process.on("uncaughtException", (err) => {
   console.error("UNCAUGHT EXCEPTION:", err);
 });
@@ -34,7 +33,6 @@ process.on("unhandledRejection", (err) => {
   console.error("UNHANDLED REJECTION:", err);
 });
 
-dotenv.config();
 connectDB();
 
 const app = express();
@@ -42,12 +40,12 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Security + CORS
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
+
 app.use(
   cors({
     origin: [
@@ -63,19 +61,17 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-// Rate limit
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
 });
 app.use("/api", limiter);
 
-
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-// Static uploads
+
 app.use(
   "/uploads",
   (req, res, next) => {
@@ -86,12 +82,10 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
-// Health
 app.get("/", (req, res) => {
   res.json({ message: "Perfume E-commerce API is running..." });
 });
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
@@ -106,15 +100,12 @@ app.use("/api/admin/users", adminUserRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/ai", aiRoutes);
 
-// 404
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error("ERROR:", err.message);
-  console.error(err.stack);
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || "Server Error",
@@ -129,7 +120,7 @@ const server = app.listen(PORT, () => {
 
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {
-    console.error(`❌ Port ${PORT} already in use. Kill it first.`);
+    console.error(`❌ Port ${PORT} already in use.`);
   } else {
     console.error("Server error:", err);
   }
