@@ -89,7 +89,7 @@ export default function Products() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16">
+    <div className="min-h-screen bg-orange-200 text-white pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-6">
         <h1 className="text-4xl font-bold mb-8">
           All <span className="text-yellow-500">Products</span>

@@ -24,7 +24,7 @@ export default function Cart() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center pt-20">
+      <div className="min-h-screen  text-white flex flex-col items-center justify-center pt-20">
         <h2 className="text-2xl mb-4">Please login to view cart</h2>
         <Link
           to="/login"
@@ -89,7 +89,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-16">
+    <div className="min-h-screen bg-orange-200 text-white pt-24 pb-16">
       <div className="max-w-6xl mx-auto px-6">
         <h1 className="text-3xl font-bold mb-8">
           Shopping <span className="text-yellow-500">Cart</span>
