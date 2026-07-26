@@ -61,7 +61,9 @@ export const getProductBySlug = async (req, res) => {
       .populate("category", "name");
 
     if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
 
     res.json({ success: true, data: product });
@@ -69,11 +71,10 @@ export const getProductBySlug = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Create Product (Admin) — Cloudinary
 export const createProduct = async (req, res) => {
   try {
-    console.log("Files received:", req.files); // ← yeh line add karo
-    console.log("Body:", req.body);
-
     const {
       name,
       brand,
@@ -86,9 +87,11 @@ export const createProduct = async (req, res) => {
       isNewArrival,
       sizes,
     } = req.body;
-const images = req.files
-  ? req.files.map((file) => `/uploads/${file.filename}`)
-  : [];
+
+    // Cloudinary: file.path / secure_url
+    const images = req.files
+      ? req.files.map((file) => file.path || file.secure_url)
+      : [];
 
     const parsedSizes =
       typeof sizes === "string" ? JSON.parse(sizes) : sizes || [];
@@ -98,7 +101,7 @@ const images = req.files
       brand,
       category,
       description,
-      shortDescription,
+      shortDescription: shortDescription || "",
       images,
       discount: Number(discount) || 0,
       isFeatured: isFeatured === "true" || isFeatured === true,
@@ -113,6 +116,7 @@ const images = req.files
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // Get All Products for Admin
 export const getAllProductsAdmin = async (req, res) => {
   try {
@@ -126,41 +130,55 @@ export const getAllProductsAdmin = async (req, res) => {
   }
 };
 
-// Update Product (Admin)
+// Update Product (Admin) — Cloudinary
 export const updateProduct = async (req, res) => {
   try {
-    const updateData = { ...req.body };
-
-    if (req.files && req.files.length > 0) {
-      updateData.images = req.files.map((file) => file.path);
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
+
+    const updateData = { ...req.body };
 
     if (typeof updateData.sizes === "string") {
       updateData.sizes = JSON.parse(updateData.sizes);
     }
 
-    if (updateData.discount) updateData.discount = Number(updateData.discount);
-    if (updateData.isFeatured)
+    if (updateData.discount !== undefined) {
+      updateData.discount = Number(updateData.discount) || 0;
+    }
+    if (updateData.isFeatured !== undefined) {
       updateData.isFeatured =
         updateData.isFeatured === "true" || updateData.isFeatured === true;
-    if (updateData.isBestSeller)
+    }
+    if (updateData.isBestSeller !== undefined) {
       updateData.isBestSeller =
         updateData.isBestSeller === "true" || updateData.isBestSeller === true;
-    if (updateData.isNewArrival)
+    }
+    if (updateData.isNewArrival !== undefined) {
       updateData.isNewArrival =
         updateData.isNewArrival === "true" || updateData.isNewArrival === true;
-
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
     }
 
-    res.json({ success: true, data: product });
+    // Nayi images Cloudinary se — purani + nayi
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(
+        (file) => file.path || file.secure_url
+      );
+      updateData.images = [...(product.images || []), ...newImages];
+    }
+
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    res.json({ success: true, data: updated });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -170,7 +188,9 @@ export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
     res.json({ success: true, message: "Product deleted successfully" });
   } catch (error) {

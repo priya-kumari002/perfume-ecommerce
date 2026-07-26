@@ -8,7 +8,7 @@ import {
   deleteProduct,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/auth.js";
-import upload from "../middleware/upload.js";
+import { upload } from "../config/cloudinary.js";
 
 const router = express.Router();
 
