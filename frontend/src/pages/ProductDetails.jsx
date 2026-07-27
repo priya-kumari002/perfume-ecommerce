@@ -161,7 +161,7 @@ export default function ProductDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen text-white bg-black">
         Loading...
       </div>
     );
@@ -169,9 +169,9 @@ export default function ProductDetails() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl font-bold text-yellow-500 mb-4">404</h1>
-        <p className="text-gray-400 mb-6 text-center">Product not found</p>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-white bg-black">
+        <h1 className="mb-4 text-4xl font-bold text-yellow-500">404</h1>
+        <p className="mb-6 text-center text-gray-400">Product not found</p>
         <Link to="/products" className="text-yellow-500 hover:underline">
           Back to Products
         </Link>
@@ -184,9 +184,9 @@ export default function ProductDetails() {
     : 0;
 
   return (
-    <div className="min-h-screen  text-white pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-xs sm:text-sm text-gray-400 mb-8 overflow-x-auto whitespace-nowrap">
+    <div className="min-h-screen pt-24 pb-16 text-white bg-pink-200">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6">
+        <div className="mb-8 overflow-x-auto text-xs text-gray-400 sm:text-sm whitespace-nowrap">
           <Link to="/" className="hover:text-yellow-500">Home</Link>
           {" / "}
           <Link to="/products" className="hover:text-yellow-500">Products</Link>
@@ -194,17 +194,17 @@ export default function ProductDetails() {
           <span className="text-white">{product.name}</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* 3D GALLERY */}
           <div className="flex flex-col">
             <div
               style={{ perspective: "1000px" }}
-              className="mb-4 order-1"
+              className="order-1 mb-4"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
               <div
-                className="aspect-square bg-gray-900 rounded-2xl overflow-hidden relative transition-transform duration-200 ease-out"
+                className="relative overflow-hidden transition-transform duration-200 ease-out bg-gray-900 aspect-square rounded-2xl"
                 style={{
                   transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.02, 1.02, 1.02)`,
                   transformStyle: "preserve-3d",
@@ -215,7 +215,7 @@ export default function ProductDetails() {
                 }}
               >
                 <div
-                  className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
+                  className="absolute inset-0 z-10 transition-opacity duration-300 pointer-events-none"
                   style={{
                     background: `linear-gradient(${135 + tilt.y * 2}deg, rgba(255,255,255,0.15) 0%, transparent 45%, transparent 100%)`,
                     opacity: tilt.x !== 0 || tilt.y !== 0 ? 1 : 0,
@@ -235,7 +235,7 @@ export default function ProductDetails() {
             </div>
 
             {product.images?.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin order-2">
+              <div className="flex order-2 gap-3 pb-2 overflow-x-auto scrollbar-thin">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
@@ -253,10 +253,10 @@ export default function ProductDetails() {
 
           {/* INFO */}
           <div>
-            <p className="text-yellow-500 text-xs sm:text-sm uppercase tracking-wider mb-2">
+            <p className="mb-2 text-xs tracking-wider text-yellow-500 uppercase sm:text-sm">
               {product.brand?.name}
             </p>
-            <h1 className="text-2xl sm:text-4xl font-bold mb-4">{product.name}</h1>
+            <h1 className="mb-4 text-2xl font-bold sm:text-4xl">{product.name}</h1>
 
             <div className="flex items-center gap-2 mb-4">
               <div className="flex">
@@ -273,7 +273,7 @@ export default function ProductDetails() {
                   </span>
                 ))}
               </div>
-              <span className="text-xs sm:text-sm text-gray-400">
+              <span className="text-xs text-gray-400 sm:text-sm">
                 {product.ratings?.average
                   ? product.ratings.average.toFixed(1)
                   : "0.0"}{" "}
@@ -282,27 +282,27 @@ export default function ProductDetails() {
             </div>
 
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl sm:text-3xl font-bold text-yellow-500">
+              <span className="text-2xl font-bold text-yellow-500 sm:text-3xl">
                 ₹{Math.round(discountedPrice).toLocaleString()}
               </span>
               {product.discount > 0 && selectedSize && (
                 <>
-                  <span className="text-lg sm:text-xl text-gray-500 line-through">
+                  <span className="text-lg text-gray-500 line-through sm:text-xl">
                     ₹{selectedSize.price.toLocaleString()}
                   </span>
-                  <span className="bg-yellow-600 text-black text-xs sm:text-sm font-bold px-2 py-1 rounded">
+                  <span className="px-2 py-1 text-xs font-bold text-black bg-yellow-600 rounded sm:text-sm">
                     -{product.discount}%
                   </span>
                 </>
               )}
             </div>
 
-            <p className="text-gray-400 text-sm sm:text-base mb-8 leading-relaxed">
+            <p className="mb-8 text-sm leading-relaxed text-gray-400 sm:text-base">
               {product.description}
             </p>
 
             <div className="mb-6">
-              <p className="text-xs sm:text-sm text-gray-400 mb-3">Select Size</p>
+              <p className="mb-3 text-xs text-gray-400 sm:text-sm">Select Size</p>
               <div className="flex flex-wrap gap-3">
                 {product.sizes?.map((size) => (
                   <button
@@ -316,7 +316,7 @@ export default function ProductDetails() {
                   >
                     {size.size}
                     {size.stock <= 0 && (
-                      <span className="text-red-500 text-xs ml-1">(Out)</span>
+                      <span className="ml-1 text-xs text-red-500">(Out)</span>
                     )}
                   </button>
                 ))}
@@ -324,25 +324,25 @@ export default function ProductDetails() {
             </div>
 
             <div className="mb-8">
-              <p className="text-xs sm:text-sm text-gray-400 mb-3">Quantity</p>
+              <p className="mb-3 text-xs text-gray-400 sm:text-sm">Quantity</p>
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setQty(Math.max(1, qty - 1))}
-                  className="w-10 h-10 bg-gray-900 border border-gray-700 rounded-lg hover:border-yellow-500 transition flex items-center justify-center text-lg"
+                  className="flex items-center justify-center w-10 h-10 text-lg transition bg-gray-900 border border-gray-700 rounded-lg hover:border-yellow-500"
                 >
                   −
                 </button>
-                <span className="text-xl w-8 text-center">{qty}</span>
+                <span className="w-8 text-xl text-center">{qty}</span>
                 <button
                   onClick={() => setQty(qty + 1)}
-                  className="w-10 h-10 bg-gray-900 border border-gray-700 rounded-lg hover:border-yellow-500 transition flex items-center justify-center text-lg"
+                  className="flex items-center justify-center w-10 h-10 text-lg transition bg-gray-900 border border-gray-700 rounded-lg hover:border-yellow-500"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-8">
+            <div className="flex flex-col flex-wrap gap-4 mb-8 sm:flex-row">
               <button
                 onClick={handleAddToCart}
                 disabled={selectedSize?.stock <= 0}
@@ -371,7 +371,7 @@ export default function ProductDetails() {
               </button>
             </div>
 
-            <div className="border-t border-gray-800 pt-6 space-y-2 text-xs sm:text-sm text-gray-400">
+            <div className="pt-6 space-y-2 text-xs text-gray-400 border-t border-gray-800 sm:text-sm">
               <p>
                 <span className="text-white">SKU:</span>{" "}
                 {selectedSize?.sku || "N/A"}
@@ -395,19 +395,19 @@ export default function ProductDetails() {
         </div>
 
         {/* REVIEWS */}
-        <section className="mt-16 sm:mt-20 border-t border-gray-900 pt-12">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-8">
+        <section className="pt-12 mt-16 border-t border-gray-900 sm:mt-20">
+          <h2 className="mb-8 text-2xl font-bold sm:text-3xl">
             Reviews & <span className="text-yellow-500">Ratings</span>
           </h2>
 
           <div className="flex items-center gap-6 mb-6">
             <div className="text-center">
-              <p className="text-4xl sm:text-5xl font-bold text-yellow-500">
+              <p className="text-4xl font-bold text-yellow-500 sm:text-5xl">
                 {product.ratings?.average
                   ? product.ratings.average.toFixed(1)
                   : "0.0"}
               </p>
-              <div className="flex gap-1 justify-center mt-1">
+              <div className="flex justify-center gap-1 mt-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
@@ -421,36 +421,36 @@ export default function ProductDetails() {
                   </span>
                 ))}
               </div>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1">
+              <p className="mt-1 text-xs text-gray-400 sm:text-sm">
                 {product.ratings?.count || 0} reviews
               </p>
             </div>
           </div>
 
           {reviewSummary && reviewSummary.count > 0 && (
-            <div className="bg-yellow-600/10 border border-yellow-600/20 rounded-xl p-4 mb-8 max-w-xl">
-              <p className="text-xs text-yellow-500 font-medium mb-1">
+            <div className="max-w-xl p-4 mb-8 border bg-yellow-600/10 border-yellow-600/20 rounded-xl">
+              <p className="mb-1 text-xs font-medium text-yellow-500">
                 🤖 AI Review Summary
               </p>
-              <p className="text-xs sm:text-sm text-gray-300">{reviewSummary.summary}</p>
+              <p className="text-xs text-gray-300 sm:text-sm">{reviewSummary.summary}</p>
             </div>
           )}
 
           {user && canReview ? (
             <form
               onSubmit={handleReviewSubmit}
-              className=" borderrounded-2xl  sm:p-6 mb-10 max-w-xl"
+              className="max-w-xl mb-10 borderrounded-2xl sm:p-6"
             >
               
             
             
             </form>
           ) : user && !canReview ? (
-            <p className="text-gray-400 mb-10 text-sm sm:text-base">
+            <p className="mb-10 text-sm text-gray-400 sm:text-base">
               Purchase this product to leave a review
             </p>
           ) : (
-            <p className="text-gray-400 mb-10 text-sm sm:text-base">
+            <p className="mb-10 text-sm text-gray-400 sm:text-base">
               <Link to="/login" className="text-yellow-500 hover:underline">
                 Login
               </Link>{" "}
@@ -460,12 +460,12 @@ export default function ProductDetails() {
 
           <div className="space-y-4">
             {reviews.length === 0 ? (
-              <p className="text-gray-500 text-sm sm:text-base">No reviews yet. Be the first!</p>
+              <p className="text-sm text-gray-500 sm:text-base">No reviews yet. Be the first!</p>
             ) : (
               reviews.map((review) => (
                 <div
                   key={review._id}
-                  className="bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-5"
+                  className="p-4 bg-gray-900 border border-gray-800 rounded-2xl sm:p-5"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <img
@@ -477,10 +477,10 @@ export default function ProductDetails() {
                             }&background=ca8a04&color=fff&size=40`
                       }
                       alt=""
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-fit"
+                      className="w-8 h-8 rounded-full sm:w-10 sm:h-10 object-fit"
                     />
                     <div>
-                      <p className="font-medium text-sm sm:text-base">
+                      <p className="text-sm font-medium sm:text-base">
                         {review.user?.name || "User"}
                       </p>
                       <div className="flex gap-0.5">
@@ -502,7 +502,7 @@ export default function ProductDetails() {
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-xs leading-relaxed text-gray-300 sm:text-sm">
                     {review.comment}
                   </p>
                 </div>
@@ -513,10 +513,10 @@ export default function ProductDetails() {
 
         {related.length > 0 && (
           <section className="mt-16 sm:mt-20">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-8">
+            <h2 className="mb-8 text-2xl font-bold sm:text-3xl">
               Related <span className="text-yellow-500">Products</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((p) => (
                 <ProductCard key={p._id} product={p} />
               ))}
@@ -526,13 +526,13 @@ export default function ProductDetails() {
 
         {aiRecs.length > 0 && (
           <section className="mt-16 sm:mt-20">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+            <h2 className="mb-2 text-2xl font-bold sm:text-3xl">
               AI <span className="text-yellow-500">Recommended</span> for You
             </h2>
-            <p className="text-gray-500 text-xs sm:text-sm mb-8">
+            <p className="mb-8 text-xs text-gray-500 sm:text-sm">
               Based on similarity, ratings & trends
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {aiRecs.map((p) => (
                 <ProductCard key={p._id} product={p} />
               ))}
@@ -549,7 +549,7 @@ export default function ProductDetails() {
         >
           <button
             onClick={() => setZoomOpen(false)}
-            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 text-white text-2xl hover:bg-white/20 transition z-10 flex items-center justify-center"
+            className="absolute z-10 flex items-center justify-center w-10 h-10 text-2xl text-white transition rounded-full top-5 right-5 bg-white/10 hover:bg-white/20"
           >
             ×
           </button>
@@ -563,7 +563,7 @@ export default function ProductDetails() {
                     product.images.length
                 );
               }}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 text-white text-xl sm:text-2xl hover:bg-white/20 transition flex items-center justify-center"
+              className="absolute flex items-center justify-center w-10 h-10 text-xl text-white transition -translate-y-1/2 rounded-full left-2 sm:left-4 top-1/2 sm:w-12 sm:h-12 bg-white/10 sm:text-2xl hover:bg-white/20"
             >
               ‹
             </button>
@@ -584,14 +584,14 @@ export default function ProductDetails() {
                   (selectedImage + 1) % product.images.length
                 );
               }}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 text-white text-xl sm:text-2xl hover:bg-white/20 transition flex items-center justify-center"
+              className="absolute flex items-center justify-center w-10 h-10 text-xl text-white transition -translate-y-1/2 rounded-full right-2 sm:right-4 top-1/2 sm:w-12 sm:h-12 bg-white/10 sm:text-2xl hover:bg-white/20"
             >
               ›
             </button>
           )}
 
           {product.images?.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute flex gap-2 -translate-x-1/2 bottom-6 left-1/2">
               {product.images.map((_, i) => (
                 <button
                   key={i}

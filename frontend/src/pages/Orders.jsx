@@ -87,7 +87,7 @@ export default function Orders() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center pt-20">
+      <div className="flex items-center justify-center min-h-screen pt-20 text-white bg-black">
         <Link to="/login" className="text-yellow-500">
           Please login
         </Link>
@@ -97,25 +97,25 @@ export default function Orders() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen text-white bg-black">
         Loading orders...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-orange-200 text-white pt-24 pb-16">
-      <div className="max-w-5xl mx-auto px-6">
-        <h1 className="text-3xl font-bold mb-8">
+    <div className="min-h-screen pt-24 pb-16 text-white bg-orange-200">
+      <div className="max-w-5xl px-6 mx-auto">
+        <h1 className="mb-8 text-3xl font-bold">
           My <span className="text-yellow-500">Orders</span>
         </h1>
 
         {orders.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-gray-400 mb-6">No orders yet</p>
+          <div className="py-20 text-center">
+            <p className="mb-6 text-gray-400">No orders yet</p>
             <Link
               to="/products"
-              className="px-6 py-3 bg-yellow-600 text-black rounded-full"
+              className="px-6 py-3 text-black bg-yellow-600 rounded-full"
             >
               Shop Now
             </Link>
@@ -125,13 +125,13 @@ export default function Orders() {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-gray-900 border border-gray-800 rounded-2xl p-6"
+                className="p-6 bg-gray-900 border border-gray-800 rounded-2xl"
               >
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                   <div>
                     <p className="text-sm text-gray-400">
                       Order ID:{" "}
-                      <span className="text-white font-mono">
+                      <span className="font-mono text-white">
                         #{order._id.slice(-8).toUpperCase()}
                       </span>
                     </p>
@@ -147,19 +147,19 @@ export default function Orders() {
                     >
                       {order.orderStatus}
                     </span>
-                    <span className="text-yellow-500 font-semibold">
+                    <span className="font-semibold text-yellow-500">
                       ₹{order.total?.toLocaleString()}
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-3 mb-4">
+                <div className="mb-4 space-y-3">
                   {order.items.map((item, i) => (
-                    <div key={i} className="flex gap-3 items-center flex-wrap">
+                    <div key={i} className="flex flex-wrap items-center gap-3">
                       <img
                         src={getImageUrl(item.image)}
                         alt={item.name}
-                        className="w-14 h-14 object-cover rounded-lg"
+                        className="object-cover rounded-lg w-14 h-14"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium">{item.name}</p>
@@ -186,7 +186,7 @@ export default function Orders() {
                 <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-800">
                   <Link
                     to={`/orders/${order._id}`}
-                    className="px-4 py-2 border border-gray-700 rounded-lg text-sm hover:border-yellow-500"
+                    className="px-4 py-2 text-sm border border-gray-700 rounded-lg hover:border-yellow-500"
                   >
                     View Details
                   </Link>
@@ -194,7 +194,7 @@ export default function Orders() {
                   {["pending", "processing"].includes(order.orderStatus) && (
                     <button
                       onClick={() => handleCancel(order._id)}
-                      className="px-4 py-2 border border-red-700 text-red-500 rounded-lg text-sm hover:bg-red-900/30"
+                      className="px-4 py-2 text-sm text-red-500 border border-red-700 rounded-lg hover:bg-red-900/30"
                     >
                       Cancel Order
                     </button>
@@ -204,7 +204,7 @@ export default function Orders() {
                     href={invoiceUrl(order._id)}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-2 border border-gray-700 rounded-lg text-sm hover:border-yellow-500"
+                    className="px-4 py-2 text-sm border border-gray-700 rounded-lg hover:border-yellow-500"
                   >
                     Download Invoice
                   </a>
@@ -216,13 +216,13 @@ export default function Orders() {
       </div>
 
       {reviewModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+          <div className="w-full max-w-md p-6 bg-gray-900 border border-gray-700 rounded-2xl">
             <div className="flex items-center gap-3 mb-6">
               <img
                 src={getImageUrl(reviewModal.image)}
                 alt=""
-                className="w-14 h-14 rounded-lg object-cover"
+                className="object-cover rounded-lg w-14 h-14"
               />
               <div>
                 <p className="font-medium">{reviewModal.name}</p>
@@ -231,7 +231,7 @@ export default function Orders() {
             </div>
 
             <form onSubmit={submitReview}>
-              <div className="flex gap-2 mb-4 justify-center">
+              <div className="flex justify-center gap-2 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
@@ -258,7 +258,7 @@ export default function Orders() {
                 placeholder="Write your review..."
                 rows={3}
                 required
-                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-xl outline-none focus:border-yellow-500 mb-4"
+                className="w-full px-4 py-3 mb-4 bg-black border border-gray-700 outline-none rounded-xl focus:border-yellow-500"
               />
 
               <div className="flex gap-3">

@@ -26,29 +26,29 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black px-4 pt-20">
+    <div className="flex items-center justify-center min-h-screen px-4 pt-20 bg-gradient-to-br from-black via-gray-900 to-black">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-gray-900/80 backdrop-blur-xl border border-gray-700 rounded-3xl p-8 shadow-2xl"
+        className="w-full max-w-md p-8 border border-gray-700 shadow-2xl bg-gray-900/80 backdrop-blur-xl rounded-3xl"
       >
-        <h2 className="text-3xl font-bold text-center mb-2 text-white">
+        <h2 className="mb-2 text-3xl font-bold text-center text-white">
           Forgot Password
         </h2>
-        <p className="text-gray-400 text-center mb-8">
+        <p className="mb-8 text-center text-gray-400">
           Enter your email to reset password
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm mb-2 text-gray-300">Email</label>
+            <label className="block mb-2 text-sm text-gray-300">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition"
+              className="w-full px-4 py-3 text-white transition border border-gray-600 bg-black/50 rounded-xl focus:outline-none focus:border-yellow-500"
               placeholder="Enter your email"
             />
           </div>
@@ -56,28 +56,26 @@ export default function ForgotPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-yellow-600 text-black font-semibold rounded-xl hover:bg-yellow-500 transition disabled:opacity-50"
+            className="w-full py-3 font-semibold text-black transition bg-yellow-600 rounded-xl hover:bg-yellow-500 disabled:opacity-50"
           >
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 
         {resetToken && (
-          <div className="mt-6 p-4 bg-gray-800/80 border border-gray-700 rounded-xl">
-            <p className="text-sm text-gray-300 mb-2">
-              Reset Token (Development only):
-            </p>
-            <p className="text-yellow-500 text-xs break-all">{resetToken}</p>
+          <div className="p-4 mt-6 border border-gray-700 bg-gray-800/80 rounded-xl">
+          
+          
             <Link
               to={`/reset-password/${resetToken}`}
-              className="inline-block mt-3 text-sm text-yellow-500 hover:underline"
+              className="inline-block mt-0 text-sm text-yellow-500 hover:underline"
             >
               Click here to Reset Password →
             </Link>
           </div>
         )}
 
-        <p className="text-center mt-6 text-gray-400">
+        <p className="mt-6 text-center text-gray-400">
           Remember password?{" "}
           <Link to="/login" className="text-yellow-500 hover:underline">
             Login
